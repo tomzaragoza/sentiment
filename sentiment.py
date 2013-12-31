@@ -1,5 +1,6 @@
 import nltk
 import pickle
+import pickling as p
 from pymongo import MongoClient
 from pprint import pprint as pretty
 from classifier import Classifier
@@ -19,7 +20,7 @@ def get_positive_tweets():
 	count = 0
 	for tweet in tweets:
 		# pretty(tweet)
-		if count != 200000:
+		if count != 5000:
 			pos_tweets.append((tweet['tweet'], 'positive'))
 			count += 1
 		else:
@@ -33,7 +34,7 @@ def get_negative_tweets():
 	count = 0
 	for tweet in tweets:
 		# print tweet
-		if count != 200000:
+		if count != 5000:
 			neg_tweets.append((tweet['tweet'], 'negative'))
 			count +=1
 		else:
@@ -71,17 +72,50 @@ def get_word_features(wordlist):
 
 
 if __name__ == "__main__":
-	print "Retrieving positive and negative tweet..."
-	positive_tweets = get_positive_tweets()
-	negative_tweets = get_negative_tweets()
 
-	print "Processing all retrieved tweets..."
-	tweets = process_tweets(positive_tweets, negative_tweets)
-	words_in_tweets = get_words_in_tweets(tweets)
+	# set this to False if:
+	# 	Need to create Classifier
+	#	Need to update classifier with new tweets that are brought in
+	#	Need to update training set (this follows after point 2)
+	CLASSIFIER_MADE = False
+	
+	if not CLASSIFIER_MADE:
+		print "Retrieving positive and negative tweets..."
+		positive_tweets = get_positive_tweets()
+		negative_tweets = get_negative_tweets()
 
-	print "Retrieving word features..."
-	word_features = get_word_features(words_in_tweets)
+		print "Processing all retrieved tweets..."
+		tweets = process_tweets(positive_tweets, negative_tweets)
+		words_in_tweets = get_words_in_tweets(tweets)
+		p.save_tweets(tweets)
 
-	print "Extracting features and classifiying using Naive Bayes..."
-	classifier = Classifier(word_features, tweets)
-	print classifier.classifier.show_most_informative_features(32)
+		print "Retrieving word features..."
+		word_features = get_word_features(words_in_tweets)
+		p.save_word_features(word_features)
+
+		print "Extracting features and classifiying using Naive Bayes..."
+		# save the training set and the classifier
+
+		c = Classifier(word_features, tweets)
+
+	elif CLASSIFIER_MADE:
+		print "Reloading previously created classifier..."
+
+		c = Classifier(	word_features=p.load_word_features(),
+						tweets=p.load_tweets(),
+						classifier=p.load_classifier()
+						)
+
+	print c.classifier.show_most_informative_features(32)
+
+	# testing it out
+	print "\ntesting out the classifier"
+	ts = [
+			"wonderful, everything is going wrong right now",
+			"The movie wasn't that bad",
+			"this is a very thought provoking book",
+			"my new computer was expensive, but I'm much more productive now",
+			"people like john are hard to deal with"
+			]
+	for tweet in ts:
+		print c.classifier.classify(c.extract_features(tweet.split())), '------>', tweet
