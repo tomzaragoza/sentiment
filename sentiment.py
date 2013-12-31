@@ -16,11 +16,13 @@ collection = db['training-set']
 
 def get_positive_tweets():
 	pos_tweets = []
-	tweets = collection.find({'sentiment': 1})
+	tweets = list(collection.find({'sentiment': 1}))
+	# print len()
 	count = 0
 	for tweet in tweets:
 		# pretty(tweet)
-		if count != 5000:
+		if count != 10000:
+			print count
 			pos_tweets.append((tweet['tweet'], 'positive'))
 			count += 1
 		else:
@@ -30,11 +32,12 @@ def get_positive_tweets():
 
 def get_negative_tweets():
 	neg_tweets = []
-	tweets = collection.find({'sentiment': 0})
+	tweets = list(collection.find({'sentiment': 0}))
 	count = 0
 	for tweet in tweets:
 		# print tweet
-		if count != 5000:
+		if count != 10000:
+		# print count
 			neg_tweets.append((tweet['tweet'], 'negative'))
 			count +=1
 		else:
@@ -106,7 +109,7 @@ if __name__ == "__main__":
 						classifier=p.load_classifier()
 						)
 
-	print c.classifier.show_most_informative_features(32)
+	print c.classifier.show_most_informative_features(10)
 
 	# testing it out
 	print "\ntesting out the classifier"
@@ -115,7 +118,8 @@ if __name__ == "__main__":
 			"The movie wasn't that bad",
 			"this is a very thought provoking book",
 			"my new computer was expensive, but I'm much more productive now",
-			"people like john are hard to deal with"
+			"people like john are hard to deal with",
+			"me no so happy just kidding lol"
 			]
 	for tweet in ts:
 		print c.classifier.classify(c.extract_features(tweet.split())), '------>', tweet
