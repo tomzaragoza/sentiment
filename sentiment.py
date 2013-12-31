@@ -15,14 +15,12 @@ collection = db['training-set']
 # implementation
 
 def get_positive_tweets():
+	print "Retrieving positive tweets..."
 	pos_tweets = []
 	tweets = list(collection.find({'sentiment': 1}))
-	# print len()
 	count = 0
 	for tweet in tweets:
-		# pretty(tweet)
 		if count != 10000:
-			print count
 			pos_tweets.append((tweet['tweet'], 'positive'))
 			count += 1
 		else:
@@ -31,13 +29,12 @@ def get_positive_tweets():
 
 
 def get_negative_tweets():
+	print "Retrieving negative tweets..."
 	neg_tweets = []
 	tweets = list(collection.find({'sentiment': 0}))
 	count = 0
 	for tweet in tweets:
-		# print tweet
 		if count != 10000:
-		# print count
 			neg_tweets.append((tweet['tweet'], 'negative'))
 			count +=1
 		else:
@@ -83,7 +80,6 @@ if __name__ == "__main__":
 	CLASSIFIER_MADE = False
 	
 	if not CLASSIFIER_MADE:
-		print "Retrieving positive and negative tweets..."
 		positive_tweets = get_positive_tweets()
 		negative_tweets = get_negative_tweets()
 
