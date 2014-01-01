@@ -31,27 +31,13 @@ class Classifier():
 			print "{0} : Running the Map function for the features".format(datetime.now())
 			pool = Pool(3)
 			returned_from_pool = pool.map(self.apply_features, tweet_batches)
-			# self.training_set += pool.map(self.apply_features, tweet_batches)
+
 			self.training_set = [feature for feature_list in returned_from_pool for feature in feature_list]
-			# print len(self.training_set)
-			# print type(self.training_set)
-
-			# # self.training_set = nltk.classify.apply_features(self.extract_features, self.tweets)
-			
-
-			# print
-			# print
-			# for i in self.training_set:
-			# 	print
-			# 	pretty(i)
-			# 	print len(i)
-			# 	print type(i)
-			# print self.training_set
-			print "length of training set is ", len(self.training_set)
 
 		if classifier:
 			self.classifier = classifier
 		else:
+			print "{0} : Running the Naive Bayes Classifier...".format(datetime.now())
 			# only save classifier / pickle if no errors occur
 			try:
 				self.classifier = nltk.NaiveBayesClassifier.train(self.training_set)

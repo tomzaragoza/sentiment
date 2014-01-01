@@ -4,7 +4,7 @@ import pickling as p
 from pymongo import MongoClient
 from pprint import pprint as pretty
 from classifier import Classifier
-
+from datetime import datetime
 
 mongo = MongoClient()
 db = mongo['sentiment-analysis']
@@ -17,7 +17,7 @@ def get_positive_tweets():
 	tweets = collection.find({'sentiment': 1})
 	count = 0
 	for tweet in tweets:
-		if count != 5:
+		if count != 30000:
 			pos_tweets.append((tweet['tweet'], 'positive'))
 			count += 1
 		else:
@@ -31,7 +31,7 @@ def get_negative_tweets():
 	tweets = collection.find({'sentiment': 0})
 	count = 0
 	for tweet in tweets:
-		if count != 5:
+		if count != 30000:
 			neg_tweets.append((tweet['tweet'], 'negative'))
 			count += 1
 		else:
@@ -69,6 +69,7 @@ def get_word_features(wordlist):
 
 if __name__ == "__main__":
 
+	print "START: {0}".format(datetime.now())
 	# set this to False if:
 	# 	Need to create Classifier
 	#	Need to update classifier with new tweets that are brought in
@@ -91,7 +92,7 @@ if __name__ == "__main__":
 		print "Extracting features and classifiying using Naive Bayes..."
 		# save the training set and the classifier
 
-		c = Classifier(word_features, tweets, show_count=False)
+		c = Classifier(word_features, tweets)
 
 	elif CLASSIFIER_MADE:
 		print "Reloading previously created classifier..."
@@ -116,3 +117,5 @@ if __name__ == "__main__":
 			]
 	for tweet in ts:
 		print c.classifier.classify(c.extract_features(tweet.split())), '------>', tweet
+
+	print "END {0}".format(datetime.now())
