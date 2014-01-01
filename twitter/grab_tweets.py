@@ -9,8 +9,8 @@ from datetime import datetime
 import authenticate
 import json
 
-CONSUMER_KEY = 'ZR96JgnjVfBslx4MynxA'
-CONSUMER_SECRET = '9PM7iZewmQEyBMXcYFfkyO8U1TaVXoqYbkiBC5Rk'
+CONSUMER_KEY = ''
+CONSUMER_SECRET = ''
 
 def positive_char_gram_tweets(api, max_tweets):
 	""" Writes negative tweet to a text file while streaming. """
