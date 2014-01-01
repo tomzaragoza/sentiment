@@ -3,10 +3,11 @@ import csv
 
 mongo = MongoClient()
 db = mongo['sentiment-analysis']
-collection = db['training-set']
+collection = db['tweets']
 
-if True:
-	with open('Sentiment_Analysis_Dataset.csv', 'rb') as csvfile:
+
+def process_csv(filename):
+	with open(filename, 'rb') as csvfile:
 		r = csv.reader(csvfile, delimiter=',')
 		next(r, None)
 		for row in r:
@@ -16,3 +17,6 @@ if True:
 					'sentiment': int(row[1])
 					}
 			collection.insert(doc)
+
+if __name__ == "__main__":
+	process_csv('Sentiment_Analysis_Dataset.csv')

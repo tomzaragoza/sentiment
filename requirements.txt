@@ -1,3 +1,5 @@
 nltk
 pymongo
 flask
+TwitterAPI
+oauth2

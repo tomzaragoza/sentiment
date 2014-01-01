@@ -6,21 +6,18 @@ from pprint import pprint as pretty
 from classifier import Classifier
 
 
-TRAIN_CLASSIFIER = True
-
 mongo = MongoClient()
 db = mongo['sentiment-analysis']
-collection = db['training-set']
+collection = db['tweets']
 
 # implementation
-
 def get_positive_tweets():
 	print "Retrieving positive tweets..."
 	pos_tweets = []
 	tweets = list(collection.find({'sentiment': 1}))
 	count = 0
 	for tweet in tweets:
-		if count != 10000:
+		if count != 10:
 			pos_tweets.append((tweet['tweet'], 'positive'))
 			count += 1
 		else:
@@ -34,7 +31,7 @@ def get_negative_tweets():
 	tweets = list(collection.find({'sentiment': 0}))
 	count = 0
 	for tweet in tweets:
-		if count != 10000:
+		if count != 10:
 			neg_tweets.append((tweet['tweet'], 'negative'))
 			count +=1
 		else:
@@ -49,7 +46,6 @@ def process_tweets(pos_tweets, neg_tweets):
 		tweets.append((words_filtered, sentiment))
 	return tweets
 
-# pretty(tweets)
 
 test_tweets = [
 	(['feel', 'happy', 'this', 'morning'], 'positive'),
@@ -102,10 +98,11 @@ if __name__ == "__main__":
 
 		c = Classifier(	word_features=p.load_word_features(),
 						tweets=p.load_tweets(),
-						classifier=p.load_classifier()
+						classifier=p.load_classifier(),
+						show_count=False
 						)
 
-	print c.classifier.show_most_informative_features(10)
+	print c.classifier.show_most_informative_features(32)
 
 	# testing it out
 	print "\ntesting out the classifier"
@@ -115,7 +112,7 @@ if __name__ == "__main__":
 			"this is a very thought provoking book",
 			"my new computer was expensive, but I'm much more productive now",
 			"people like john are hard to deal with",
-			"me no so happy just kidding lol"
+			"I'm not happy"
 			]
 	for tweet in ts:
 		print c.classifier.classify(c.extract_features(tweet.split())), '------>', tweet
