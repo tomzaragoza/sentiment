@@ -29,7 +29,7 @@ class Classifier():
 			tweet_batches = [first_batch, second_batch, third_batch]
 
 			print "{0} : Running the Map function for the features".format(datetime.now())
-			pool = Pool(3)
+			pool = Pool(2)
 			returned_from_pool = pool.map(self.apply_features, tweet_batches)
 
 			self.training_set = [feature for feature_list in returned_from_pool for feature in feature_list]
@@ -53,7 +53,7 @@ class Classifier():
 		features = {}
 
 		if self.show_count:
-			print "{0} : {1} of out {2}".format(datetime.now(), self.overall_count, len(self.tweets))
+			print "{0} : {1} out of {2}".format(datetime.now(), self.overall_count, len(self.tweets))
 
 		for word in self.word_features:
 			features['contains({0})'.format(word.encode('utf-8'))] = word in document_words
