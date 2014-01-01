@@ -17,7 +17,7 @@ def get_positive_tweets():
 	tweets = collection.find({'sentiment': 1})
 	count = 0
 	for tweet in tweets:
-		if count != 30000:
+		if count != 20:
 			pos_tweets.append((tweet['tweet'], 'positive'))
 			count += 1
 		else:
@@ -31,18 +31,36 @@ def get_negative_tweets():
 	tweets = collection.find({'sentiment': 0})
 	count = 0
 	for tweet in tweets:
-		if count != 30000:
+		if count != 20:
 			neg_tweets.append((tweet['tweet'], 'negative'))
 			count += 1
 		else:
 			break
 	return neg_tweets
 
+def contains(e):
+	for chars in ['@', 'http:', 'https:']:
+		if chars in e:
+			return True
+	return False
+
+def process_token(e):
+	token = e
+	for c in ['!', '#', '.', ';', ':']:
+		if c in e:
+			token = e.replace(c, '')
+	return token
+
+def is_emoticon(e):
+	if e in [":-(", ":'(", ":-)", ":')"]:
+		return True
+	return False
 
 def process_tweets(pos_tweets, neg_tweets):
 	tweets = []
 	for (words, sentiment) in pos_tweets + neg_tweets:
-		words_filtered = [e.lower() for e in words.split() if len(e) >= 3]
+		words_filtered = [process_token(e.lower()) for e in words.split() if len(e) >= 3 and not contains(e) and not is_emoticon(e)]
+		print words_filtered
 		tweets.append((words_filtered, sentiment))
 	return tweets
 
