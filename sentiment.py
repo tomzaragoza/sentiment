@@ -17,7 +17,7 @@ def get_positive_tweets():
 	tweets = collection.find({'sentiment': 1})
 	count = 0
 	for tweet in tweets:
-		if count != 1500:
+		if count != 30000:
 			pos_tweets.append((tweet['tweet'], 'positive'))
 			count += 1
 		else:
@@ -31,7 +31,7 @@ def get_negative_tweets():
 	tweets = collection.find({'sentiment': 0})
 	count = 0
 	for tweet in tweets:
-		if count != 1500:
+		if count != 30000:
 			neg_tweets.append((tweet['tweet'], 'negative'))
 			count += 1
 		else:

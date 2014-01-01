@@ -1,6 +1,7 @@
 import nltk
 import pickling as p
 from pprint import pprint as pretty
+from datetime import datetime
 
 class Classifier():
 	def __init__(self, word_features=None, tweets=None, training_set=None, classifier=None, show_count=True):
@@ -25,10 +26,9 @@ class Classifier():
 		features = {}
 
 		if self.show_count:
-			print self.overall_count, 'out of', len(self.tweets)
+			print "{0} : {1} of out {2}".format(datetime.now(), self.overall_count, len(self.tweets))
 
 		for word in self.word_features:
-			# print word
 			features['contains({0})'.format(word.encode('utf-8'))] = word in document_words
 		self.overall_count += 1
 		return features
