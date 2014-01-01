@@ -14,10 +14,10 @@ collection = db['tweets']
 def get_positive_tweets():
 	print "Retrieving positive tweets..."
 	pos_tweets = []
-	tweets = list(collection.find({'sentiment': 1}))
+	tweets = collection.find({'sentiment': 1})
 	count = 0
 	for tweet in tweets:
-		if count != 10:
+		if count != 1500:
 			pos_tweets.append((tweet['tweet'], 'positive'))
 			count += 1
 		else:
@@ -28,12 +28,12 @@ def get_positive_tweets():
 def get_negative_tweets():
 	print "Retrieving negative tweets..."
 	neg_tweets = []
-	tweets = list(collection.find({'sentiment': 0}))
+	tweets = collection.find({'sentiment': 0})
 	count = 0
 	for tweet in tweets:
-		if count != 10:
+		if count != 1500:
 			neg_tweets.append((tweet['tweet'], 'negative'))
-			count +=1
+			count += 1
 		else:
 			break
 	return neg_tweets

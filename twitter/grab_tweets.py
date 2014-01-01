@@ -9,8 +9,8 @@ from datetime import datetime
 import authenticate
 import json
 
-CONSUMER_KEY = ''
-CONSUMER_SECRET = ''
+CONSUMER_KEY = 'ZR96JgnjVfBslx4MynxA'
+CONSUMER_SECRET = '9PM7iZewmQEyBMXcYFfkyO8U1TaVXoqYbkiBC5Rk'
 
 def positive_char_gram_tweets(api, max_tweets):
 	""" Writes negative tweet to a text file while streaming. """
@@ -78,8 +78,8 @@ if __name__ == "__main__":
 		access_tokens = authenticate.get_tokens(CONSUMER_KEY, CONSUMER_SECRET)
 		api = TwitterAPI(CONSUMER_KEY, CONSUMER_SECRET, access_tokens['oauth_token'], access_tokens['oauth_token_secret'])
 
-		positive_char_gram_tweets(api, 5000)
-		negative_char_gram_tweets(api, 5000)
+		positive_char_gram_tweets(api, 100000)
+		negative_char_gram_tweets(api, 100000)
 
 	if PROCESS_TWEETS:
 		mongo = MongoClient()
