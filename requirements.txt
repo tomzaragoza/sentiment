@@ -3,3 +3,4 @@ pymongo
 flask
 TwitterAPI
 oauth2
+gevent

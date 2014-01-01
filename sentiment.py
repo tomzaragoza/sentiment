@@ -17,7 +17,7 @@ def get_positive_tweets():
 	tweets = collection.find({'sentiment': 1})
 	count = 0
 	for tweet in tweets:
-		if count != 30000:
+		if count != 5:
 			pos_tweets.append((tweet['tweet'], 'positive'))
 			count += 1
 		else:
@@ -31,7 +31,7 @@ def get_negative_tweets():
 	tweets = collection.find({'sentiment': 0})
 	count = 0
 	for tweet in tweets:
-		if count != 30000:
+		if count != 5:
 			neg_tweets.append((tweet['tweet'], 'negative'))
 			count += 1
 		else:
@@ -91,7 +91,7 @@ if __name__ == "__main__":
 		print "Extracting features and classifiying using Naive Bayes..."
 		# save the training set and the classifier
 
-		c = Classifier(word_features, tweets)
+		c = Classifier(word_features, tweets, show_count=False)
 
 	elif CLASSIFIER_MADE:
 		print "Reloading previously created classifier..."
