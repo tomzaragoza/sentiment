@@ -43,7 +43,7 @@ class Classifier():
 				self.classifier = nltk.NaiveBayesClassifier.train(self.training_set)
 			except:
 				raise Exception()
-			p.save_classifier(self.classifier)
+			p.save(self.classifier, 'my_classifier')
 	
 	def apply_features(self, tweets):
 		return nltk.classify.apply_features(self.extract_features, tweets)

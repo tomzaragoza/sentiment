@@ -17,7 +17,7 @@ def get_positive_tweets():
 	tweets = collection.find({'sentiment': 1})
 	count = 0
 	for tweet in tweets:
-		if count != 20:
+		if count != 30000:
 			pos_tweets.append((tweet['tweet'], 'positive'))
 			count += 1
 		else:
@@ -31,7 +31,7 @@ def get_negative_tweets():
 	tweets = collection.find({'sentiment': 0})
 	count = 0
 	for tweet in tweets:
-		if count != 20:
+		if count != 30000:
 			neg_tweets.append((tweet['tweet'], 'negative'))
 			count += 1
 		else:
@@ -101,11 +101,11 @@ if __name__ == "__main__":
 		print "Processing all retrieved tweets..."
 		tweets = process_tweets(positive_tweets, negative_tweets)
 		words_in_tweets = get_words_in_tweets(tweets)
-		p.save_tweets(tweets)
+		p.save(tweets, 'tweets')
 
 		print "Retrieving word features..."
 		word_features = get_word_features(words_in_tweets)
-		p.save_word_features(word_features)
+		p.save(word_features, 'word_features')
 
 		print "Extracting features and classifiying using Naive Bayes..."
 		# save the training set and the classifier
@@ -115,9 +115,9 @@ if __name__ == "__main__":
 	elif CLASSIFIER_MADE:
 		print "Reloading previously created classifier..."
 
-		c = Classifier(	word_features=p.load_word_features(),
-						tweets=p.load_tweets(),
-						classifier=p.load_classifier(),
+		c = Classifier(	word_features=p.load('word_features'),
+						tweets=p.load('tweets'),
+						classifier=p.load('my_classifier'),
 						show_count=False
 						)
 
